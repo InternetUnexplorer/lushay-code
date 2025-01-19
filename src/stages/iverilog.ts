@@ -10,6 +10,7 @@ export class IVerilogTestbenchStage extends ToolchainStage {
 
         const generateTestCommand = [
             iverilogPath,
+            '-g2012',
             '-o',
             outputPath,
             '-s',
