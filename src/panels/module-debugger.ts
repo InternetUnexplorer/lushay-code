@@ -125,7 +125,7 @@ export class ModuleDebuggerWebviewContentProvider implements vscode.WebviewViewP
         const overrides = await ModuleDebuggerWebviewContentProvider.getOverridePaths?.() || {};
         const yosysPath = overrides['yosys'] || path.join(ossCadPath, 'yosys');
         const ossRootPath = path.resolve(ossCadPath, '..');
-        const res = spawnSync(yosysPath,  ['-p', `read_verilog "${ModuleDebuggerWebviewContentProvider.currentFile.fsPath}"; proc; write_json -compat-int ___module_export.json`], {
+        const res = spawnSync(yosysPath,  ['-p', `read_verilog -sv "${ModuleDebuggerWebviewContentProvider.currentFile.fsPath}"; proc; write_json -compat-int ___module_export.json`], {
             env: {
                 // eslint-disable-next-line @typescript-eslint/naming-convention
                 PATH: [
