@@ -85,7 +85,7 @@ export class ModuleDebuggerWebviewContentProvider implements vscode.WebviewViewP
     }
 
     public async updateCurrentFile(changedFile: boolean) {
-        if (!ModuleDebuggerWebviewContentProvider.currentFile || !ModuleDebuggerWebviewContentProvider.currentFile.fsPath.endsWith('.v')) {
+        if (!ModuleDebuggerWebviewContentProvider.currentFile || !(ModuleDebuggerWebviewContentProvider.currentFile.fsPath.endsWith('.v') || ModuleDebuggerWebviewContentProvider.currentFile.fsPath.endsWith('.sv'))) {
             this._view?.webview.postMessage({
                 command: 'updatedCurrentModules',
                 data: []
@@ -245,7 +245,7 @@ export class ModuleDebuggerWebviewContentProvider implements vscode.WebviewViewP
 
         const testContent = newFile.join('\n');
         const testFile = fs.mkdtempSync(path.join(os.tmpdir(), 'oss-cad-suite-vscode-'));
-        const fileName = `${moduleName}_test.v`;
+        const fileName = `${moduleName}_test.sv`;
         const filePath = path.join(testFile, fileName);
         fs.writeFileSync(filePath, testContent);
         const ossCadPath = await ModuleDebuggerWebviewContentProvider.ossCadSuitePath?.();
@@ -261,7 +261,7 @@ export class ModuleDebuggerWebviewContentProvider implements vscode.WebviewViewP
         const ossRootPath = path.resolve(ossCadPath, '..');
         const gowinCellsPath = path.join(ossRootPath, 'share/yosys/gowin/cells_sim.v');
 
-        const res = spawnSync(iverilogPath,  ['-o', `${moduleName}_test.vvp`, '-s', `${moduleName}_test`, `${moduleName}_test.v`, ...(projectFile.includedFilePaths), gowinCellsPath], {
+        const res = spawnSync(iverilogPath,  ['-g2012', '-o', `${moduleName}_test.vvp`, '-s', `${moduleName}_test`, `${moduleName}_test.sv`, ...(projectFile.includedFilePaths), gowinCellsPath], {
             cwd: testFile,
             env: {
                 // eslint-disable-next-line @typescript-eslint/naming-convention
