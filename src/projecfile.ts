@@ -226,9 +226,9 @@ async function expandProjectFile(projectFile: ProjectFile): Promise<ProjectFile>
     }
 
     const basePathRelativetoProject = path.relative(workspaceFolder, projectFile.basePath);
-    projectFile.includedFilePaths = ((projectFile.includedFiles === 'all') ? 
-        (await vscode.workspace.findFiles(path.join(basePathRelativetoProject, '**', '*.v')))
-        .map((file) => file.fsPath).filter((filePath) => !filePath.endsWith('_tb.v')) :
+    projectFile.includedFilePaths = ((projectFile.includedFiles === 'all') ?
+        (await vscode.workspace.findFiles(path.join(basePathRelativetoProject, '**', '*.v', '*.sv')))
+        .map((file) => file.fsPath).filter((filePath) => !(filePath.endsWith('_tb.v') || filePath.endsWith('_tb.sv'))) :
         projectFile.includedFiles.map((fileName: string) => {
             if (path.isAbsolute(fileName)) {
                 return fileName;
@@ -238,8 +238,8 @@ async function expandProjectFile(projectFile: ProjectFile): Promise<ProjectFile>
     );
 
     projectFile.testBenches = ((projectFile.testBenches === 'all') ?
-        (await vscode.workspace.findFiles(path.join(basePathRelativetoProject, '**', '*.v')))
-        .map((file) => file.fsPath).filter((filePath) => filePath.endsWith('_tb.v')) :
+        (await vscode.workspace.findFiles(path.join(basePathRelativetoProject, '**', '*.v', '*.sv')))
+        .map((file) => file.fsPath).filter((filePath) => (filePath.endsWith('_tb.v') || filePath.endsWith('_tb.sv'))) :
         projectFile.testBenches.map((fileName: string) => {
             if (path.isAbsolute(fileName)) {
                 return fileName;

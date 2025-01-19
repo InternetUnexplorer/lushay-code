@@ -26,6 +26,7 @@
   "activationEvents": [
     "onStartupFinished",
     "workspaceContains:**/*.v",
+    "workspaceContains:**/*.sv",
     "workspaceContains:**/*.cst",
     "onCommand:lushay-code.runFPGAToolchain",
     "onCommand:lushay-code.selectProject",
@@ -51,7 +52,7 @@
         "name": "Module Debugger",
         "canToggleVisibility": true,
         "order": 10,
-        "when": "resourceExtname == .v"
+        "when": "resourceExtname == .v || resourceExtname == .sv"
         }
       ]
     },
