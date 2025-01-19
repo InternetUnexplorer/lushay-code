@@ -5,7 +5,7 @@ export class IVerilogTestbenchStage extends ToolchainStage {
     public async runProg(previousStage: ToolchainStage | undefined): Promise<number | null> {
         const iverilogPath = path.join(ToolchainStage.ossCadSuiteBinPath, 'iverilog');
         const vvpPath = path.join(ToolchainStage.ossCadSuiteBinPath, 'vvp');
-        const baseTestName = path.basename(this.projectFile.testBenchPath).replace(/\.v$/, '');
+        const baseTestName = path.basename(this.projectFile.testBenchPath).replace(/\.s?v$/, '');
         const outputPath = path.join(this.projectFile.basePath, baseTestName + '.o');
 
         const generateTestCommand = [

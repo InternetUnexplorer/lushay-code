@@ -133,7 +133,7 @@ export class YosysCSTCheckStage extends ToolchainStage {
     protected onCommandPrintErrorLine(line: string): void {
         ToolchainStage.logger.logToSummary('    Error: ' + line.trimEnd());
         if (line.includes('ERROR: syntax error, unexpected')) {
-            const errorLocation = line.match(/([^/\\]+\.v):([0-9]+):/);
+            const errorLocation = line.match(/([^/\\]+\.s?v):([0-9]+):/);
             if (errorLocation && +errorLocation[2] > 1) {
                 ToolchainStage.logger.logToSummary(`    Check lines ${+errorLocation[2]-1}-${errorLocation[2]} of file ${errorLocation[1]} you may be missing a semicolon or left a block open`)
             }
